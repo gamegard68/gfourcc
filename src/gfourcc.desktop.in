@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+_Name=AVI FourCC Changer
+_GenericName=AVI FourCC
+_Comment=Change the FourCC of AVI Files
+Exec=gfourcc
+Icon=gfourcc
+StartupNotify=true
+Type=Application
+Categories=AudioVideo;GTK;
+_Keywords=gfourcc;
