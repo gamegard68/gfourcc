@@ -1,4 +1,3 @@
-#!/bin/sh -e
+NOCONFIGURE=1 ./bootstrap.sh
 
-autoconf -f -i && automake -a -f
-
+exec ./configure  "$@"

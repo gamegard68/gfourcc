@@ -1,51 +1,38 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
+AC_PREREQ(2.62)
 AC_INIT([gfourcc], [0.1.2])
-AC_CONFIG_AUX_DIR([.])
-AM_INIT_AUTOMAKE(1.9 check-news foreign subdir-objects)
-m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES])
-AC_CONFIG_SRCDIR([src/])
-
-# Extract host information.
-AC_CANONICAL_HOST
+AC_CONFIG_SRCDIR([src/main.cc])
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([foreign 1.11 -Wall dist-xz tar-ustar])
+AM_SILENT_RULES([yes])
 
 # Checks for programs.
 AC_PROG_CXX
-AC_PROG_CC
-AC_PROG_CPP
-AC_PROG_INSTALL
+# AC_PROG_CC
 AC_PROG_LN_S
-AC_PROG_MAKE_SET
-AC_PROG_RANLIB
-AM_PROG_CC_C_O
-AC_CACHE_SAVE
-
-# Recent versions of glib/gtkmm need c++11 support
+AC_TYPE_SIGNAL
+AC_HEADER_STDC
 AX_CXX_COMPILE_STDCXX_11
 
-required_libs="gtkmm-3.0 >= 3.6.0"
+PKG_CHECK_MODULES(GUILIBS, [ gtkmm-3.0 >= 3.0 sigc++-2.0 ])
+AC_SUBST(GUILIBS_CFLAGS)
+AC_SUBST(GUILIBS_LIBS)
 
-###################################
-# Check for libraries.
-###################################
+IT_PROG_INTLTOOL([0.35.0])
+GETTEXT_PACKAGE=gfourcc
+AC_SUBST([GETTEXT_PACKAGE])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],["$GETTEXT_PACKAGE"],[Gettext package])
+AM_GLIB_GNU_GETTEXT
 
-PKG_CHECK_MODULES([gfourcc], [$required_libs])
-AC_CACHE_SAVE
+AC_CONFIG_FILES([
+Makefile
+src/Makefile
+icons/Makefile
+icons/hicolor/Makefile
+icons/hicolor/48x48/Makefile
+icons/hicolor/48x48/apps/Makefile])
 
-###################################
-# Output
-###################################
-
-AC_OUTPUT([
-  Makefile
-    m4/Makefile
-
-    icons/Makefile
-      icons/hicolor/Makefile
-        icons/hicolor/48x48/Makefile
-          icons/hicolor/48x48/apps/Makefile
-      
-])
-
+AC_OUTPUT
 
