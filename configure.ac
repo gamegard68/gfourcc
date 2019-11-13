@@ -1,24 +1,29 @@
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
-
-AC_PREREQ(2.62)
 AC_INIT([gfourcc], [0.1.2])
+AC_PREREQ([2.50])
+
 AC_CONFIG_SRCDIR([src/main.cc])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([foreign 1.11 -Wall dist-xz tar-ustar])
-AM_SILENT_RULES([yes])
+
+AM_INIT_AUTOMAKE([1.9 subdir-objects])
+AM_MAINTAINER_MODE
 
 # Checks for programs.
 AC_PROG_CXX
-# AC_PROG_CC
 AC_PROG_LN_S
 AC_TYPE_SIGNAL
 AC_HEADER_STDC
 AX_CXX_COMPILE_STDCXX_11
 
-PKG_CHECK_MODULES(GUILIBS, [ gtkmm-3.0 >= 3.0 sigc++-2.0 ])
-AC_SUBST(GUILIBS_CFLAGS)
-AC_SUBST(GUILIBS_LIBS)
+# Check for pkg-config early to avoid splitting message when first used.
+PKG_CHECK_EXISTS
+
+# GTKMM
+PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.0])
+AC_SUBST([GTKMM_LIBS])
+AC_SUBST([GTKMM_CFLAGS])
+
+# Check for glibmm minimum required version.
+PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.0])
 
 AC_CONFIG_FILES([
 Makefile
