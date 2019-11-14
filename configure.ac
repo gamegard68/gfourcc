@@ -17,6 +17,15 @@ AX_CXX_COMPILE_STDCXX_11
 # Check for pkg-config early to avoid splitting message when first used.
 PKG_CHECK_EXISTS
 
+# i18n stuff
+
+GETTEXT_PACKAGE=gfourcc
+AC_SUBST([GETTEXT_PACKAGE])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], "$GETTEXT_PACKAGE", [description])
+
+AM_GLIB_GNU_GETTEXT
+IT_PROG_INTLTOOL([0.36.0])
+
 # GTKMM
 PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.0])
 AC_SUBST([GTKMM_LIBS])

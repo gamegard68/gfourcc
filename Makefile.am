@@ -16,10 +16,6 @@ CLEANFILES = $(bin_PROGRAMS) $(DESKTOP_IN_FILES)
 gfourcc.desktop.in:  gfourcc.desktop.in.in Makefile
 	$(do_subst) < $(srcdir)/gfourcc.desktop.in.in > gfourcc.desktop.in
 
-gfourcc:  gfourcc.in Makefile
-	$(do_subst) < $(srcdir)/gfourcc.in > gfourcc
-	chmod +x gfourcc
-
 EXTRA_DIST =			\
 	$(DESKTOP_IN_IN_FILES)	\
 	$(DESKTOP_FILES)	\

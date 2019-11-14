@@ -1,9 +1,9 @@
-AM_CPPFLAGS =						\
-	$(GTKMM_CFLAGS)
+AM_CPPFLAGS = \
+  $(GTKMM_CFLAGS)
 
-AM_CFLAGS = -Wall	
+AM_CFLAGS = -Wall
 
-AM_CXXFLAGS = -Wall	
+AM_CXXFLAGS = -Wall
 
 gfourcc_SOURCES= \
   gfourcc_application.h gfourcc_application.cc \
