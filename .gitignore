@@ -1,5 +1,4 @@
 ABOUT-NLS
-ChangeLog
 *~
 config.guess
 config.rpath
@@ -16,7 +15,6 @@ config.log
 config.status
 configure
 depcomp
-README
 README.html
 install-sh
 missing
