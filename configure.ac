@@ -1,46 +1,40 @@
-AC_INIT([gfourcc], [0.1.2])
-AC_PREREQ([2.50])
+dnl Process this file with autoconf to produce a configure script.
+
+AC_INIT([gfourcc],[0.1.2-git])
+AC_PREREQ([2.13])
+
 
 AC_CONFIG_SRCDIR([src/main.cc])
+AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE([1.9 subdir-objects])
-AM_MAINTAINER_MODE
+dnl -----------------------------------------------
+dnl Package name and version number (user defined)
+dnl -----------------------------------------------
 
-# Checks for programs.
+PACKAGE=gfourcc
+VERSION=0.1.2
+
+dnl -----------------------------------------------
+dnl Package name and version number (DO NOT MODIFY)
+dnl -----------------------------------------------
+
+AM_INIT_AUTOMAKE(1.9)
+
+ACLOCAL_AMFLAGS='${ACLOCAL_FLAGS}'
+AC_SUBST(ACLOCAL_AMFLAGS)
+
+dnl Checks for programs.
 AC_PROG_CXX
-AC_PROG_LN_S
-AC_TYPE_SIGNAL
-AC_HEADER_STDC
-AX_CXX_COMPILE_STDCXX_11
+AC_PROG_CC
 
-# Check for pkg-config early to avoid splitting message when first used.
-PKG_CHECK_EXISTS
+dnl Checks for libraries.
+PKG_CHECK_MODULES(DEPS, gtkmm-3.0 >= 3.0)
+AC_SUBST(DEPS_CFLAGS)
+AC_SUBST(DEPS_LIBS)
 
-# i18n stuff
+dnl Enable C++11 compilation.
+AX_CXX_COMPILE_STDCXX_11()
 
-GETTEXT_PACKAGE=gfourcc
-AC_SUBST([GETTEXT_PACKAGE])
-AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], "$GETTEXT_PACKAGE", [description])
-
-AM_GLIB_GNU_GETTEXT
-IT_PROG_INTLTOOL([0.36.0])
-
-# GTKMM
-PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.0])
-AC_SUBST([GTKMM_LIBS])
-AC_SUBST([GTKMM_CFLAGS])
-
-# Check for glibmm minimum required version.
-PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.0])
-
-AC_CONFIG_FILES([
-Makefile
-src/Makefile
-icons/Makefile
-icons/hicolor/Makefile
-icons/hicolor/48x48/Makefile
-icons/hicolor/48x48/apps/Makefile])
-
-AC_OUTPUT
-
+dnl Create makefiles
+AC_OUTPUT(Makefile src/Makefile)

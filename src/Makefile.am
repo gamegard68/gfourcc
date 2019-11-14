@@ -1,13 +1,12 @@
-AM_CPPFLAGS = \
-  $(GTKMM_CFLAGS)
+bin_PROGRAMS = gfourcc
 
-AM_CFLAGS = -Wall
+#List of source files needed to build the executable:
+gfourcc_SOURCES =									\
+	main.cc											\
+	gfourcc_application.h gfourcc_application.cc	\
+	gfourcc_window.h gfourcc_window.cc
 
-AM_CXXFLAGS = -Wall
+AM_CPPFLAGS = $(DEPS_CFLAGS)
+LDADD = $(DEPS_LIBS)
 
-gfourcc_SOURCES= \
-  gfourcc_application.h gfourcc_application.cc \
-  gfourcc_window.h gfourcc_window.cc \
-  main.cc
-
-gfourcc_LDADD = $(GTKMM_LIBS)
+CLEANFILES = $(bin_PROGRAMS)

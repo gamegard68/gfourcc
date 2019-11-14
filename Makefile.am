@@ -1,31 +1,29 @@
-# Tell aclocal where to find `.m4' files.
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS=src icons
+SUBDIRS = src
 
-@INTLTOOL_DESKTOP_RULE@
-DESKTOP_IN_IN_FILES = gfourcc.desktop.in.in
-DESKTOP_IN_FILES = gfourcc.desktop.in
-DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
-desktopdir = $(datadir)/applications
-desktop_DATA = $(DESKTOP_FILES)
+# Icon
+icondir			= $(datadir)/icons/hicolor/48x48/apps/
+icon_DATA		= gfourcc.png
 
-bin_PROGRAMS=gfourcc
-CLEANFILES = $(bin_PROGRAMS) $(DESKTOP_IN_FILES)
+# @INTLTOOL_DESKTOP_RULE@
+# DESKTOP_IN_IN_FILES = gfourcc.desktop.in.in
+# DESKTOP_IN_FILES = gfourcc.desktop.in
+# DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
+# desktopdir = $(datadir)/applications
+# desktop_DATA = $(DESKTOP_FILES)
 
-gfourcc.desktop.in:  gfourcc.desktop.in.in Makefile
-	$(do_subst) < $(srcdir)/gfourcc.desktop.in.in > gfourcc.desktop.in
+# CLEANFILES = $(bin_PROGRAMS) $(DESKTOP_IN_FILES)
 
-EXTRA_DIST =			\
-	$(DESKTOP_IN_IN_FILES)	\
-	$(DESKTOP_FILES)	\
-	intltool-extract.in  	\
-	intltool-merge.in	\
-	intltool-update.in	\
-	gfourcc.in
+# gfourcc.desktop.in:  gfourcc.desktop.in.in Makefile
+#	$(do_subst) < $(srcdir)/gfourcc.desktop.in.in > gfourcc.desktop.in
 
-DISTCLEANFILES =		\
-	$(desktop_DATA)		\
-	intltool-extract	\
-	intltool-merge		\
-	intltool-update
+# EXTRA_DIST =				\
+#	$(DESKTOP_IN_IN_FILES)	\
+#	$(DESKTOP_FILES)		\
+#	autogen.sh				\
+#	gfourcc.png
+
+EXTRA_DIST =				\
+	autogen.sh				\
+	gfourcc.png
