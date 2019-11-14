@@ -1,0 +1,5 @@
+GFOURCC
+=======
+GFourcc is a utility written in gtkmm3 for changing the fourcc code and description of a Microsoft AVI File.
+
+
