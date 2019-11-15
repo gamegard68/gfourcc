@@ -1,11 +1,18 @@
-/*
- ============================================================================
- Name        : main.cc
- Author      : Edgard Matthijs
- Version     : 0.5
- Copyright   : Copyleft
- Description : AVI File FourCC Changer written in gtkmm3
- ============================================================================
+/* GFourCC - GTKMM3 based tool to change the FourCC code and description
+ *           of a Microsoft AVI Video File
+ * Copyright (C) 2017-2019 Edgard Matthijs <emacs68@gmail.com>
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
 #include "gfourcc_application.h"

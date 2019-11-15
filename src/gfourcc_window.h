@@ -30,8 +30,8 @@ protected:
   sigc::connection m_ConnectionFocusOut;
 
   void on_dialog_drop_drag_data_received(
-    const Glib::RefPtr<Gdk::DragContext>&, int, int,
-    const Gtk::SelectionData&, guint, guint);
+  const Glib::RefPtr<Gdk::DragContext>&, int, int,
+  const Gtk::SelectionData&, guint, guint);
 
   void on_fcch_entry_activate(void);
   bool on_fcch_entry_focus_out_event(GdkEventFocus*);

@@ -1,11 +1,18 @@
-/*
- ============================================================================
- Name        : gfourcc_window.cc
- Author      : Edgard Matthijs
- Version     : 0.5
- Copyright   : Copyleft
- Description : AVI File FourCC Changer written in gtkmm 3
- ============================================================================
+/* GFourCC - GTKMM3 based tool to change the FourCC code and description
+ *           of a Microsoft AVI Video File
+ * Copyright (C) 2017-2019 Edgard Matthijs <emacs68@gmail.com>
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
 #include "gfourcc_window.h"
@@ -38,12 +45,12 @@ GFourCCAppWindow::GFourCCAppWindow()
       m_empty_hdr.append(m_pango_fcc_markup_start);
     if (count == 116)
       m_empty_hdr.append(m_pango_markup_end);
-  	if (count == 188)
-  	  m_empty_hdr.append(m_pango_fcc_markup_start);
+    if (count == 188)
+      m_empty_hdr.append(m_pango_fcc_markup_start);
     if (count == 192)
       m_empty_hdr.append(m_pango_markup_end);
     m_empty_hdr.append(1, ch);
-  	if( (count+1) % 16 == 0) m_empty_hdr.append("\n");
+    if( (count+1) % 16 == 0) m_empty_hdr.append("\n");
   }
   m_empty_hdr.append(1, ch);
   m_empty_hdr.append(m_pango_markup_end);
@@ -84,15 +91,11 @@ GFourCCAppWindow::GFourCCAppWindow()
   m_list_fccs.push_back("xvid");
   m_list_fccs.push_back("XVIX");
 
-  set_title( ("AVI FourCC Code Changer") );
+  set_title( ("AVI FourCC Changer") );
 
   try
   {
-#ifdef HAVE_SET_DEFAULT_ICON_NAME
     set_default_icon_name( "gfourcc" );
-#else
-    set_icon_from_file("gfourcc.png");
-#endif
   }
   catch ( Glib::Exception & e )
   {
@@ -200,8 +203,8 @@ Gtk::Frame *GFourCCAppWindow::build_fourcc_apply_frame(void)
 
   for (const auto& fcc : m_list_fccs)
   {
-	  m_Combo_FourCCHandler->append(fcc);
-	  m_Combo_FourCCodec->append(fcc);
+    m_Combo_FourCCHandler->append(fcc);
+    m_Combo_FourCCodec->append(fcc);
   }
 
   /************************
@@ -212,19 +215,19 @@ Gtk::Frame *GFourCCAppWindow::build_fourcc_apply_frame(void)
 
   //Connect signal handlers
   auto fcch_entry = m_Combo_FourCCHandler->get_entry();
-	// Alternatively you can connect to entry->signal_changed().
+  // Alternatively you can connect to entry->signal_changed().
   // m_Combo_FourCCHandler->signal_changed().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_fcch_combo_changed) );
   if (fcch_entry)
   {
-	// The Entry shall receive focus-out events
-	fcch_entry->set_max_width_chars(FCC_LEN);
-	fcch_entry->set_max_length(FCC_LEN);
-	fcch_entry->add_events(Gdk::FOCUS_CHANGE_MASK);
-	fcch_entry->signal_activate().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_fcch_entry_activate) );
-	m_ConnectionFocusOut = fcch_entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_fcch_entry_focus_out_event) );
+    // The Entry shall receive focus-out events
+    fcch_entry->set_max_width_chars(FCC_LEN);
+    fcch_entry->set_max_length(FCC_LEN);
+    fcch_entry->add_events(Gdk::FOCUS_CHANGE_MASK);
+    fcch_entry->signal_activate().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_fcch_entry_activate) );
+    m_ConnectionFocusOut = fcch_entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_fcch_entry_focus_out_event) );
   }
   else
-	cout << "No Fcch Entry ???" << endl;
+    cout << "No Fcch Entry ???" << endl;
 
   /************************
   * FourCC Codec Frame
@@ -238,15 +241,15 @@ Gtk::Frame *GFourCCAppWindow::build_fourcc_apply_frame(void)
   // m_Combo_FourCCodec->signal_changed().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_codec_combo_changed) );
   if (codec_entry)
   {
-	// The Entry shall receive focus-out events
-	codec_entry->set_max_width_chars(FCC_LEN);
-	codec_entry->set_max_length(FCC_LEN);
-	codec_entry->add_events(Gdk::FOCUS_CHANGE_MASK);
-	codec_entry->signal_activate().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_codec_entry_activate) );
-	m_ConnectionFocusOut = codec_entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_codec_entry_focus_out_event) );
+    // The Entry shall receive focus-out events
+    codec_entry->set_max_width_chars(FCC_LEN);
+    codec_entry->set_max_length(FCC_LEN);
+    codec_entry->add_events(Gdk::FOCUS_CHANGE_MASK);
+    codec_entry->signal_activate().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_codec_entry_activate) );
+    m_ConnectionFocusOut = codec_entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_codec_entry_focus_out_event) );
   }
   else
-	cout << "No Codec Entry ???" << endl;
+    cout << "No Codec Entry ???" << endl;
 
   m_Button_Apply_FourCC->signal_clicked().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_button_apply_fourcc_clicked));
 
@@ -286,6 +289,7 @@ Gtk::FileChooserButton* GFourCCAppWindow::build_file_chooser_button(void)
   filter_text->set_name("AVI Files");
   filter_text->add_mime_type("video/avi");
   filter_text->add_pattern("*.avi");
+  filter_text->add_pattern("*.AVI");
 
   m_File_Chooser_Button->add_filter(filter_text);
 
@@ -340,7 +344,7 @@ void GFourCCAppWindow::on_file_open_selected(void)
   try
   {
     file = m_File_Chooser_Button->get_filename();
-	if (!(file.empty())) {
+    if (!(file.empty())) {
       if (!(file_exists(file))) {
         emesg = ("File Not Found!");
         showErrorMesgDlg(emesg);
@@ -373,7 +377,7 @@ void GFourCCAppWindow::open_avi_file_from_cli(Glib::ustring& fname)
   Glib::ustring emesg;
   try
   {
-	if (!(fname.empty())) {
+    if (!(fname.empty())) {
       m_File_Chooser_Button->select_filename(fname);
     }
   }
@@ -439,41 +443,41 @@ void GFourCCAppWindow::read_avi_header(Glib::ustring& fname)
   {
     auto file = Gio::File::create_for_path(fname);
     auto is = file->read();
-	if(!is)
-	{
-	  message = ("Empty File Returned");
-	  showErrorMesgDlg(message);
+    if(!is)
+    {
+      message = ("Empty File Returned");
+      showErrorMesgDlg(message);
     }
 
-	if ((is->seek(0x00, Glib::SEEK_TYPE_CUR)))
-	{
-	  is->read(buffer, AVILEN);
-	  retStr = m_pango_markup_start;
+    if ((is->seek(0x00, Glib::SEEK_TYPE_CUR)))
+    {
+      is->read(buffer, AVILEN);
+      retStr = m_pango_markup_start;
 
-	  for(int count = 0 ; count < AVILEN ; count++)
-	  {
-		ch = convert_non_ascii_char_to_dot(buffer[count]);
-		if (count == 112)
-		  retStr.append(m_pango_fcc_markup_start);
-		if (count == 116)
-		  retStr.append(m_pango_markup_end);
-		if (count == 188)
-		  retStr.append(m_pango_fcc_markup_start);
-		if (count == 192)
-		  retStr.append(m_pango_markup_end);
+      for(int count = 0 ; count < AVILEN ; count++)
+      {
+        ch = convert_non_ascii_char_to_dot(buffer[count]);
+        if (count == 112)
+          retStr.append(m_pango_fcc_markup_start);
+        if (count == 116)
+          retStr.append(m_pango_markup_end);
+        if (count == 188)
+          retStr.append(m_pango_fcc_markup_start);
+        if (count == 192)
+          retStr.append(m_pango_markup_end);
 
-		s.assign(1, ch);
-		retStr.append(Glib::Markup::escape_text(s));
+        s.assign(1, ch);
+        retStr.append(Glib::Markup::escape_text(s));
 
-		if( (count+1) % 16 == 0) retStr.append("\n");
-	  }
-	  retStr.erase(retStr.length()-1);
-	  retStr.append(m_pango_markup_end);
-	  m_avi_hdr = retStr;
-	}
-	// cout << this->avi_header << endl;
-	delete[] buffer;
-	is->close();
+        if( (count+1) % 16 == 0) retStr.append("\n");
+      }
+      retStr.erase(retStr.length()-1);
+      retStr.append(m_pango_markup_end);
+      m_avi_hdr = retStr;
+    }
+    // cout << this->avi_header << endl;
+    delete[] buffer;
+    is->close();
   }
   catch (Glib::Error& err)
   {
@@ -532,15 +536,15 @@ Glib::ustring GFourCCAppWindow::read_fcc(Glib::ustring& fname, int byteOffset)
     auto is = file->read();
 
     if ((is->seek(byteOffset, Glib::SEEK_TYPE_CUR)))
-  	{
+    {
       is->read(buffer,FCC_LEN);
       if ((buffer[0] != '\0') && (buffer[1] != '\0') && (buffer[2] != '\0') && (buffer[3] != '\0'))
       {
-          fcc.assign(buffer,FCC_LEN);
+        fcc.assign(buffer,FCC_LEN);
       }
       else
       {
-    	  fcc.assign(errString);
+        fcc.assign(errString);
       }
     }
     delete[] buffer;

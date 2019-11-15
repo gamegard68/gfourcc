@@ -11,7 +11,7 @@ class GFourCCAppWindow;
 class GFourCCApplicaton: public Gtk::Application
 {
 protected:
-	GFourCCApplicaton();
+  GFourCCApplicaton();
 
 public:
   static Glib::RefPtr<GFourCCApplicaton> create();
