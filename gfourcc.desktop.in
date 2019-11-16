@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=AVI FourCC Changer
+GenericName=AVI FourCC
+X-GNOME-FullName=AVI FourCC Changer
+Comment=Change the FourCC of AVI Files
+Exec=@bindir@/gfourcc
+Icon=gfourcc
+StartupNotify=true
+Type=Application
+Categories=AudioVideo;
+Keywords=gfourcc;
