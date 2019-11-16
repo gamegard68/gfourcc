@@ -6,24 +6,18 @@ SUBDIRS = src
 icondir			= $(datadir)/icons/hicolor/48x48/apps/
 icon_DATA		= gfourcc.png
 
-# @INTLTOOL_DESKTOP_RULE@
-# DESKTOP_IN_IN_FILES = gfourcc.desktop.in.in
-# DESKTOP_IN_FILES = gfourcc.desktop.in
-# DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
-# desktopdir = $(datadir)/applications
-# desktop_DATA = $(DESKTOP_FILES)
+desktopdir = $(datadir)/applications
+desktop_DATA = gfourcc.desktop
 
-# CLEANFILES = $(bin_PROGRAMS) $(DESKTOP_IN_FILES)
+# Substitute variables in a Desktop Entry file.
+gfourcc.desktop: gfourcc.desktop.in
+	$(AM_V_GEN) sed -e 's|@bindir[@]|$(bindir)|g' $< > $@
 
-# gfourcc.desktop.in:  gfourcc.desktop.in.in Makefile
-#	$(do_subst) < $(srcdir)/gfourcc.desktop.in.in > gfourcc.desktop.in
-
-# EXTRA_DIST =				\
-#	$(DESKTOP_IN_IN_FILES)	\
-#	$(DESKTOP_FILES)		\
-#	autogen.sh				\
-#	gfourcc.png
+CLEANFILES = $(bin_PROGRAMS) gfourcc.desktop
 
 EXTRA_DIST =				\
 	autogen.sh				\
-	gfourcc.png
+	gfourcc.png				\
+	gfourcc.desktop.in
+
+
