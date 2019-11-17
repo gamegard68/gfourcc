@@ -7,6 +7,6 @@
 #  without any warranty.
 
 glib-gettextize --copy --force
-intltoolize --copy --force --automake
+# intltoolize --copy --force --automake
 
 autoreconf -f -i && automake -a -f

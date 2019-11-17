@@ -346,11 +346,12 @@ void GFourCCAppWindow::on_file_open_selected(void)
     file = m_File_Chooser_Button->get_filename();
     if (!(file.empty())) {
       if (!(file_exists(file))) {
-        emesg = ("File Not Found!");
+        emesg = ("File Not Found or Empty!");
         showErrorMesgDlg(emesg);
         m_Button_Apply_FourCC->set_sensitive(false);
         m_Combo_FourCCHandler->set_active(0);
         m_Combo_FourCCodec->set_active(0);
+        m_Label_AviHeader->set_markup(m_empty_hdr);
         return;
       }
       if (!(is_valid_avifile(file))) {
@@ -408,7 +409,11 @@ bool GFourCCAppWindow::file_exists(Glib::ustring& fname)
   try
   {
     auto file = Gio::File::create_for_path(fname);
-    if(file->query_exists())
+    auto fileInfo = file->query_info("*", Gio::FILE_QUERY_INFO_NONE);
+
+    // cout << "File size: " << fileInfo->get_size() << endl;
+
+    if((file->query_exists()) && (fileInfo->get_size() > AVILEN))
       ret = true;
   }
   catch(const Glib::Exception& ex)
