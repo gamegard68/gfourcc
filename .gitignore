@@ -15,6 +15,7 @@ config.log
 config.status
 configure
 depcomp
+INSTALL
 README.html
 install-sh
 missing
@@ -25,3 +26,4 @@ Makefile.in
 .deps
 *.tar.gz
 *.swp
+gfourcc.desktop
