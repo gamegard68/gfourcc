@@ -9,5 +9,3 @@ gfourcc_SOURCES =									\
 AM_CPPFLAGS = $(DEPS_CFLAGS)
 LDADD = $(DEPS_LIBS)
 
-CLEANFILES = $(bin_PROGRAMS) gfourcc.desktop
-
