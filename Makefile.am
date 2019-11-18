@@ -18,4 +18,5 @@ EXTRA_DIST =				\
 	gfourcc.png				\
 	gfourcc.desktop.in
 
+CLEANFILES = $(bin_PROGRAMS) gfourcc.desktop
 
