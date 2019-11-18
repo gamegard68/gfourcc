@@ -30,7 +30,6 @@ a. Building from Source
       or
     sudo make install-strip // Stripped without Debug Info
       
-
    The following dependencies are required to build GFourCC from source:
       g++
       make
