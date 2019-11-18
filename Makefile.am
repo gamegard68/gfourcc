@@ -13,8 +13,6 @@ desktop_DATA = gfourcc.desktop
 gfourcc.desktop: gfourcc.desktop.in
 	$(AM_V_GEN) sed -e 's|@bindir[@]|$(bindir)|g' $< > $@
 
-CLEANFILES = $(bin_PROGRAMS) gfourcc.desktop
-
 EXTRA_DIST =				\
 	autogen.sh				\
 	gfourcc.png				\
