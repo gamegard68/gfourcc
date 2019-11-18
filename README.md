@@ -31,9 +31,9 @@ a. Building from Source
     sudo make install-strip // Stripped without Debug Info
       
    The following dependencies are required to build GFourCC from source:
-      g++
-      make
-      gnome-common
+      g++,
+      make,
+      gnome-common,
       gtkmm3
 
 
