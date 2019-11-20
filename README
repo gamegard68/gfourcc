@@ -2,6 +2,13 @@ GFOURCC
 -------
 GFourCC is a utility written in C++ with gtkmm3 for changing the fourcc code and description of a Microsoft AVI File.
 
+USAGE
+-----
+Three ways to open an AVI file:
+1. Click the FileChooserButton to open the FileChooserDialog.
+2. Start gfourcc via command prompt and pass the Avi File as an argument.
+3. Drag and Drop the Avi File onto the GUI Tool.
+
 INSTALL
 -------
 a. Building from Source
