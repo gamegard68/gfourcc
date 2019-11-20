@@ -14,9 +14,6 @@ INSTALL
 -------
 a. Building from Source
 
-    Briefly, prepare, build and install GFourCC into the default location of
-    /usr/local using:
-    
     Preparation and Build
     ---------------------
     *** Method 1 ***
