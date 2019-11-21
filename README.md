@@ -3,13 +3,6 @@ GUI Tool written in gtkmm3 for the purpose of changing the FOURCC Codec and Desc
 
 ![GFourCC Utility](/screenshots/gfourcc_scrn.png?raw=true "GFourCC Utility")
 
-USAGE
------
-Three ways to open an AVI file:
-1. Open the GUI tool and click the FileChooser Button to open the FileChooser Dialog.
-2. Start gfourcc via command prompt and pass the Avi File as an argument.
-3. Drag and Drop the Avi File onto the GUI Tool.
-
 INSTALL
 -------
 a. Building from Source
@@ -33,5 +26,11 @@ b. Installing from the Arch User Repository (AUR)
 
 yay -S gfourcc 
 
+USAGE
+-----
+Three ways to open an AVI file:
+1. Open the GUI tool and click the FileChooser Button to open the FileChooser Dialog.
+2. Start gfourcc via command prompt and pass the Avi File as an argument.
+3. Drag and Drop the Avi File onto the GUI Tool.
 
-    
+
