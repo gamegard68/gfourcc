@@ -1,11 +1,11 @@
 GFOURCC
 -------
-GFourCC is a utility written in C++ with gtkmm3 for changing the fourcc code and description of a Microsoft AVI File.
+GFourCC is a utility written in C++ with gtkmm3 for changing the fourcc codec and description of a Microsoft AVI File.
 
 USAGE
 -----
 Three ways to open an AVI file:
-1. Click the FileChooserButton to open the FileChooserDialog.
+1. Open the GUI Tool and click the FileChooser Button to open the FileChooser Dialog.
 2. Start gfourcc via command prompt and pass the Avi File as an argument.
 3. Drag and Drop the Avi File onto the GUI Tool.
 
@@ -15,19 +15,10 @@ a. Building from Source
 
     Preparation and Build
     ---------------------
-    *** Method 1 ***
-    ./autogen.sh
-    make
-       
-    *** Method 2 ***
-    autoreconf --install
-    ./configure
-    make
-      
-    *** Method 3 ***
-    gnome-autogen.sh --prefix=<aprefix>
-    make
     
+    ./autogen.sh --prefix=/usr
+    make
+
     Installation
     ------------
     sudo make install // With Debug Information
