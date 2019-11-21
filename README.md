@@ -8,19 +8,19 @@ INSTALL
 a. Building from Source
 
 Preparation and Build
-./autogen.sh --prefix=/usr
-make
+    ./autogen.sh --prefix=/usr
+    make
       
 Installation
-sudo make install // With Debug Information
-  or
-sudo make install-strip // Stripped without Debug Info
+    sudo make install // With Debug Information
+         or
+    sudo make install-strip // Stripped without Debug Info
           
-The following dependencies are required to build GFourCC from source:
-    g++,
-    make,
-    gnome-common,
-    gtkmm3
+    The following dependencies are required to build GFourCC from source:
+        g++,
+        make,
+        gnome-common,
+        gtkmm3
 
 b. Installing from the Arch User Repository (AUR)
 
