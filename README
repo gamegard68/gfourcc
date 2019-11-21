@@ -2,34 +2,36 @@ GFOURCC
 -------
 GFourCC is a utility written in C++ with gtkmm3 for changing the fourcc codec and description of a Microsoft AVI File.
 
-USAGE
------
-Three ways to open an AVI file:
-1. Open the GUI Tool and click the FileChooser Button to open the FileChooser Dialog.
-2. Start gfourcc via command prompt and pass the Avi File as an argument.
-3. Drag and Drop the Avi File onto the GUI Tool.
-
 INSTALL
 -------
 a. Building from Source
 
-    Preparation and Build
-    ---------------------
-    
+Preparation and Build
+
     ./autogen.sh --prefix=/usr
     make
+      
+Installation
 
-    Installation
-    ------------
     sudo make install // With Debug Information
-      or
+         or
     sudo make install-strip // Stripped without Debug Info
           
-   The following dependencies are required to build GFourCC from source:
-      g++,
-      make,
-      gnome-common,
-      gtkmm3
+    The following dependencies are required to build GFourCC from source:
+        g++,
+        make,
+        gnome-common,
+        gtkmm3
+
+b. Installing from the Arch User Repository (AUR)
+
+    yay -S gfourcc 
+
+USAGE
+-----
+Three ways to open an AVI file:
+1. Open the GUI tool and click the FileChooser Button to open the FileChooser Dialog.
+2. Start gfourcc via command prompt and pass the Avi File as an argument.
+3. Drag and Drop the Avi File onto the GUI Tool.
 
 
-    
