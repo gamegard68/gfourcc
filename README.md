@@ -31,8 +31,8 @@ b. Installing from the Arch User Repository (AUR)
 USAGE
 -----
 Three ways to open an AVI file:
-1. Open the GUI tool and click the FileChooser Button to open the FileChooser Dialog.
-2. Start gfourcc via command prompt and pass the Avi File as an argument.
-3. Drag and Drop the Avi File onto the GUI Tool.
+    1. Open the GUI tool and click the FileChooser Button to open the FileChooser Dialog.
+    2. Start gfourcc via command prompt and pass the Avi File as an argument.
+    3. Drag and Drop the Avi File onto the GUI Tool.
 
 
