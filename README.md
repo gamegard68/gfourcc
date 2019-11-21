@@ -1,12 +1,12 @@
 # gfourcc
-GUI Tool written in gtkmm3 for the purpose of changing the FOURCC Code and Description of an AVI file
+GUI Tool written in gtkmm3 for the purpose of changing the FOURCC Codec and Description of an AVI file.
 
 ![GFourCC Utility](/screenshots/gfourcc_scrn.png?raw=true "GFourCC Utility")
 
 USAGE
 -----
 Three ways to open an AVI file:
-1. Click the FileChooserButton to open the FileChooserDialog.
+1. Open the GUI tool and click the FileChooser Button to open the FileChooser Dialog.
 2. Start gfourcc via command prompt and pass the Avi File as an argument.
 3. Drag and Drop the Avi File onto the GUI Tool.
 
@@ -16,19 +16,9 @@ a. Building from Source
 
     Preparation and Build
     ---------------------
-    *** Method 1 ***
-    ./autogen.sh
+    ./autogen.sh --prefix=/usr
     make
        
-    *** Method 2 ***
-    autoreconf --install
-    ./configure
-    make
-      
-    *** Method 3 ***
-    gnome-autogen.sh --prefix=<aprefix>
-    make
-    
     Installation
     ------------
     sudo make install // With Debug Information
