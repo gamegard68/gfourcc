@@ -6,6 +6,6 @@ gfourcc_SOURCES =									\
 	gfourcc_application.h gfourcc_application.cc	\
 	gfourcc_window.h gfourcc_window.cc
 
-program_CPPFLAGS = $(GTKMM_CFLAGS)
-program_LDADD = $(GTKMM_LIBS)
+AM_CPPFLAGS = $(GTKMM_CFLAGS)
+LDADD = $(GTKMM_LIBS)
 
