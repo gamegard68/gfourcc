@@ -33,10 +33,6 @@ protected:
   const Glib::RefPtr<Gdk::DragContext>&, int, int,
   const Gtk::SelectionData&, guint, guint);
 
-  void on_fcch_entry_activate(void);
-  bool on_fcch_entry_focus_out_event(GdkEventFocus*);
-  void on_codec_entry_activate(void);
-  bool on_codec_entry_focus_out_event(GdkEventFocus*);
   void on_button_apply_fourcc_clicked(void);
   void on_file_open_selected(void);
   void on_button_quit_clicked(void);

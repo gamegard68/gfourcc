@@ -17,7 +17,6 @@
 
 #include "gfourcc_window.h"
 
-
 /******************************************************************************
  * Constructor/Destructor
  ******************************************************************************/
@@ -30,11 +29,11 @@ GFourCCAppWindow::GFourCCAppWindow()
   m_list_fccs()
 {
   // Markup tags for Header
-  m_pango_markup_start = ("<span font=\"Andale Mono\" font_weight=\"bold\" background=\"white\" foreground=\"black\">");
+  m_pango_markup_start = ("<span font=\"Courier New\" font_weight=\"bold\" background=\"white\" foreground=\"black\">");
   m_pango_markup_end = ("</span>");
   // m_pango_fcc_markup_start = ("<span font=\"Andale Mono\" background=\"white\" foreground=\"black\" underline=\"single\">");
   // m_pango_fcc_markup_start = ("<span font=\"Andale Mono\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
-  m_pango_fcc_markup_start = ("<span font=\"Andale Mono\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
+  m_pango_fcc_markup_start = ("<span font=\"Courier New\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
 
   // Initialize Empty Header
   static char ch = '.';
@@ -217,14 +216,14 @@ Gtk::Frame *GFourCCAppWindow::build_fourcc_apply_frame(void)
   auto fcch_entry = m_Combo_FourCCHandler->get_entry();
   // Alternatively you can connect to entry->signal_changed().
   // m_Combo_FourCCHandler->signal_changed().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_fcch_combo_changed) );
+
   if (fcch_entry)
   {
     // The Entry shall receive focus-out events
     fcch_entry->set_max_width_chars(FCC_LEN);
     fcch_entry->set_max_length(FCC_LEN);
     fcch_entry->add_events(Gdk::FOCUS_CHANGE_MASK);
-    fcch_entry->signal_activate().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_fcch_entry_activate) );
-    m_ConnectionFocusOut = fcch_entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_fcch_entry_focus_out_event) );
+    fcch_entry->set_input_hints(Gtk::INPUT_HINT_NO_EMOJI);
   }
   else
     cout << "No Fcch Entry ???" << endl;
@@ -239,14 +238,14 @@ Gtk::Frame *GFourCCAppWindow::build_fourcc_apply_frame(void)
   auto codec_entry = m_Combo_FourCCodec->get_entry();
   // Alternatively you can connect to entry->signal_changed().
   // m_Combo_FourCCodec->signal_changed().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_codec_combo_changed) );
+
   if (codec_entry)
   {
     // The Entry shall receive focus-out events
     codec_entry->set_max_width_chars(FCC_LEN);
     codec_entry->set_max_length(FCC_LEN);
     codec_entry->add_events(Gdk::FOCUS_CHANGE_MASK);
-    codec_entry->signal_activate().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_codec_entry_activate) );
-    m_ConnectionFocusOut = codec_entry->signal_focus_out_event().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_codec_entry_focus_out_event) );
+    codec_entry->set_input_hints(Gtk::INPUT_HINT_NO_EMOJI);
   }
   else
     cout << "No Codec Entry ???" << endl;
@@ -295,13 +294,12 @@ Gtk::FileChooserButton* GFourCCAppWindow::build_file_chooser_button(void)
 
   m_File_Chooser_Button->set_tooltip_text("Click here to open AVI File");
 
-  std::string dirname = Glib::build_filename(Glib::get_home_dir(), "Videos");
+  Glib::ustring dirname = Glib::build_filename(Glib::get_home_dir(), "Videos");
 
   m_File_Chooser_Button->set_current_folder(dirname);
   m_File_Chooser_Button->set_margin_top(10);
   m_File_Chooser_Button->set_margin_bottom(5);
   m_File_Chooser_Button->set_valign(Gtk::ALIGN_CENTER);
-  //m_File_Chooser_Button->set_width_chars(25);
 
   m_File_Chooser_Button->signal_selection_changed().connect(sigc::mem_fun(*this,&GFourCCAppWindow::on_file_open_selected));
 
@@ -339,7 +337,6 @@ void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
 
 void GFourCCAppWindow::on_file_open_selected(void)
 {
-  // cout << "GFourCCAppWindow::on_file_open_selected():" << endl;
   Glib::ustring file, emesg;
   try
   {
@@ -374,8 +371,6 @@ void GFourCCAppWindow::on_file_open_selected(void)
 
 void GFourCCAppWindow::open_avi_file_from_cli(Glib::ustring& fname)
 {
-  // cout << "GFourCCAppWindow::open_avi_file_from_cli():" << endl;
-  Glib::ustring emesg;
   try
   {
     if (!(fname.empty())) {
@@ -390,7 +385,6 @@ void GFourCCAppWindow::open_avi_file_from_cli(Glib::ustring& fname)
 
 void GFourCCAppWindow::parse_avi_file(Glib::ustring& fname)
 {
-  // cout << "GFourCCAppWindow::parse_avi_file():" << endl;
   if (!(fname.empty())) {
     read_avi_header(fname);
     m_Label_AviHeader->set_text("");
@@ -410,8 +404,6 @@ bool GFourCCAppWindow::file_exists(Glib::ustring& fname)
   {
     auto file = Gio::File::create_for_path(fname);
     auto fileInfo = file->query_info("*", Gio::FILE_QUERY_INFO_NONE);
-
-    // cout << "File size: " << fileInfo->get_size() << endl;
 
     if((file->query_exists()) && (fileInfo->get_size() > AVILEN))
       ret = true;
@@ -480,7 +472,6 @@ void GFourCCAppWindow::read_avi_header(Glib::ustring& fname)
       retStr.append(m_pango_markup_end);
       m_avi_hdr = retStr;
     }
-    // cout << this->avi_header << endl;
     delete[] buffer;
     is->close();
   }
@@ -639,28 +630,6 @@ void GFourCCAppWindow::on_dialog_drop_drag_data_received(
     }
   }
   context->drag_finish(false, false, time);
-}
-
-void GFourCCAppWindow::on_fcch_entry_activate()
-{
-  // cout << "on_fcch_entry_activate(): Row=" << m_Combo_FourCCHandler.get_active_row_number()
-  //  << ", Text=" << m_Combo_FourCCHandler.get_active_text() << endl;
-}
-
-void GFourCCAppWindow::on_codec_entry_activate()
-{
-  // cout << "on_codec_entry_activate(): Row=" << m_Combo_FourCCodec.get_active_row_number()
-  //  << ", Text=" << m_Combo_FourCCodec.get_active_text() << endl;
-}
-
-bool GFourCCAppWindow::on_fcch_entry_focus_out_event(GdkEventFocus* /* event */)
-{
-  return true;
-}
-
-bool GFourCCAppWindow::on_codec_entry_focus_out_event(GdkEventFocus* /* event */)
-{
-  return true;
 }
 
 void GFourCCAppWindow::on_button_quit_clicked(void)
