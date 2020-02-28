@@ -51,7 +51,7 @@ protected:
   bool is_valid_avifile(Glib::ustring&);
   void parse_avi_file(Glib::ustring&);
   void read_avi_header(Glib::ustring&);
-  void showErrorMesgDlg(Glib::ustring&);
+  void showMesgDlg(Glib::ustring&, Glib::ustring&, Glib::ustring&);
   char convert_non_ascii_char_to_dot(char);
   Glib::ustring read_fcc(Glib::ustring&, int);
   void write_fcc(Glib::ustring&, int, Glib::ustring&);

@@ -308,43 +308,79 @@ Gtk::FileChooserButton* GFourCCAppWindow::build_file_chooser_button(void)
 
 void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
 {
-  Glib::ustring file, fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev, emesg;
+  Glib::ustring file, fname, fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev, emesg, imesg, dialog_title, dialog_icon;
+  bool isDescChanged, isCodecChanged, hasDescChanged, hasCodecChanged;
+
+  isDescChanged = false;
+  isCodecChanged = false;
+  hasDescChanged = false;
+  hasCodecChanged = false;
+
+  dialog_icon = ("dialog-error");
+  dialog_title = ("ERROR");
+
   fcc_descr = (m_Combo_FourCCHandler->get_active_text());
   if (fcc_descr.length()<FCC_LEN) {
     emesg = ("Entered FCC Description Must be 4 characters long!");
-    showErrorMesgDlg(emesg);
+    showMesgDlg(dialog_title, dialog_icon, emesg);
     return;
   }
   fcc_coded = (m_Combo_FourCCodec->get_active_text());
   if (fcc_coded.length()<FCC_LEN) {
     emesg = ("Entered FCC Code Must be 4 characters long!");
-    showErrorMesgDlg(emesg);
+    showMesgDlg(dialog_title, dialog_icon, emesg);
     return;
   }
   file = Glib::filename_from_uri(m_File_Chooser_Button->get_uri());
+  fname = Glib::filename_display_basename(m_File_Chooser_Button->get_filename());
+  dialog_title = ("INFO");
+  dialog_icon = ("dialog-info");
+
   fcc_descr_prev = read_fourcc_descr(file);
   fcc_coded_prev = read_fourcc_codec(file);
-  if (fcc_descr.compare(fcc_descr_prev) != 0)
+
+  if (fcc_descr.compare(fcc_descr_prev) != 0) {
     write_fourcc_descr(file, fcc_descr);
-  if (fcc_coded.compare(fcc_coded_prev) != 0)
-      write_fourcc_codec(file, fcc_coded);
+    isDescChanged = true;
+  }
+  if (fcc_coded.compare(fcc_coded_prev) != 0) {
+    write_fourcc_codec(file, fcc_coded);
+    isCodecChanged = true;
+  }
   read_avi_header(file);
   m_Label_AviHeader->set_text("");
   m_Label_AviHeader->set_markup(m_avi_hdr);
   m_Combo_FourCCHandler->set_active_text(read_fourcc_descr(file));
   m_Combo_FourCCodec->set_active_text(read_fourcc_codec(file));
+
+  if (fcc_descr.compare(read_fourcc_descr(file)) == 0) hasDescChanged = true;
+  if (fcc_coded.compare(read_fourcc_codec(file)) == 0) hasCodecChanged = true;
+
+  if ((hasDescChanged) && (hasCodecChanged) && (isDescChanged) && (isCodecChanged)) {
+    imesg = ("New FourCC Description and Codec\nsuccessfully applied to:\n" + fname);
+    showMesgDlg(dialog_title, dialog_icon, imesg);
+  } else if ((hasDescChanged) && (isDescChanged)) {
+	imesg = ("New FourCC Description\nsuccessfully applied to:\n" + fname);
+    showMesgDlg(dialog_title, dialog_icon, imesg);
+  } else if ((hasCodecChanged) && (isCodecChanged)) {
+    imesg = ("New FourCC Codec\nsuccessfully applied to:\n" + fname);
+    showMesgDlg(dialog_title, dialog_icon, imesg);
+  }
+
 }
 
 void GFourCCAppWindow::on_file_open_selected(void)
 {
-  Glib::ustring file, emesg;
+  Glib::ustring file, emesg, dialog_title, dialog_icon;
+  dialog_icon = ("dialog-error");
+  dialog_title = ("ERROR");
   try
   {
     file = m_File_Chooser_Button->get_filename();
     if (!(file.empty())) {
       if (!(file_exists(file))) {
         emesg = ("File Not Found or Empty!");
-        showErrorMesgDlg(emesg);
+        showMesgDlg(dialog_title, dialog_icon, emesg);
         m_Button_Apply_FourCC->set_sensitive(false);
         m_Combo_FourCCHandler->set_active(0);
         m_Combo_FourCCodec->set_active(0);
@@ -353,7 +389,7 @@ void GFourCCAppWindow::on_file_open_selected(void)
       }
       if (!(is_valid_avifile(file))) {
         emesg = ("Not a Valid AVI File!");
-        showErrorMesgDlg(emesg);
+        showMesgDlg(dialog_title, dialog_icon, emesg);
         m_Button_Apply_FourCC->set_sensitive(false);
         m_Combo_FourCCHandler->set_active(0);
         m_Combo_FourCCodec->set_active(0);
@@ -434,7 +470,7 @@ void GFourCCAppWindow::read_avi_header(Glib::ustring& fname)
 {
   char * buffer = new char[AVILEN];
   static char ch;
-  Glib::ustring retStr, message, s;
+  Glib::ustring retStr, emesg, s, dialog_title, dialog_icon;
 
   try
   {
@@ -442,8 +478,10 @@ void GFourCCAppWindow::read_avi_header(Glib::ustring& fname)
     auto is = file->read();
     if(!is)
     {
-      message = ("Empty File Returned");
-      showErrorMesgDlg(message);
+      dialog_title = ("ERROR");
+      dialog_icon = ("dialog_error");
+      emesg = ("Empty File Returned");
+      showMesgDlg(dialog_title, dialog_icon, emesg);
     }
 
     if ((is->seek(0x00, Glib::SEEK_TYPE_CUR)))
@@ -486,13 +524,14 @@ void GFourCCAppWindow::read_avi_header(Glib::ustring& fname)
 
 }
 
-void GFourCCAppWindow::showErrorMesgDlg(Glib::ustring& mesg)
+void GFourCCAppWindow::showMesgDlg(Glib::ustring& title, Glib::ustring& icon_name, Glib::ustring& mesg)
 {
-  Gtk::Dialog dialog("ERROR", *this, true);
-  dialog.set_default_size(200,100);
+  Gtk::Dialog dialog(title, *this, true);
+  //dialog.set_default_size(200,100);
+  dialog.set_halign(Gtk::ALIGN_CENTER);
 
   Gtk::Image image;
-  image.set_from_icon_name("dialog-error" , Gtk::ICON_SIZE_DIALOG);
+  image.set_from_icon_name(icon_name , Gtk::ICON_SIZE_DIALOG);
   Gtk::Label label;
   label.set_text(mesg);
   label.set_padding(10, 10);
