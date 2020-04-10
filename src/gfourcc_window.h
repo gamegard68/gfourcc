@@ -8,6 +8,7 @@ using namespace std;
 
 #define AVILEN 224
 #define FCC_LEN 4
+#define MIME_LEN 12
 
 class GFourCCAppWindow : public Gtk::ApplicationWindow {
 public:

@@ -284,13 +284,13 @@ Gtk::Frame *GFourCCAppWindow::build_fourcc_apply_frame(void)
 Gtk::FileChooserButton* GFourCCAppWindow::build_file_chooser_button(void)
 {
   m_File_Chooser_Button = new Gtk::FileChooserButton("Select AVI File", Gtk::FILE_CHOOSER_ACTION_OPEN);
-  auto filter_text = Gtk::FileFilter::create();
-  filter_text->set_name("AVI Files");
-  filter_text->add_mime_type("video/avi");
-  filter_text->add_pattern("*.avi");
-  filter_text->add_pattern("*.AVI");
+  auto avi_filter = Gtk::FileFilter::create();
+  avi_filter->set_name("AVI Files");
+  avi_filter->add_mime_type("video/x-msvideo");
+  // filter_text->add_pattern("*.avi");
+  // filter_text->add_pattern("*.AVI");
 
-  m_File_Chooser_Button->add_filter(filter_text);
+  m_File_Chooser_Button->add_filter(avi_filter);
 
   m_File_Chooser_Button->set_tooltip_text("Click here to open AVI File");
 
@@ -453,17 +453,33 @@ bool GFourCCAppWindow::file_exists(Glib::ustring& fname)
 
 bool GFourCCAppWindow::is_valid_avifile(Glib::ustring& fname)
 {
-  bool result = false;
-  Glib::ustring magic, avis, list;
-  magic = "RIFF";
-  avis = "AVI ";
-  list = "LIST";
+  char * buffer = new char[MIME_LEN];
+  Glib::ustring magic, avis;
 
-  if ((read_fcc(fname, 0x00) == magic) && (read_fcc(fname, 0x08) == avis) && (read_fcc(fname, 0x0c) == list))
+  try
   {
-    result = true;
+    auto file = Gio::File::create_for_path(fname);
+    auto is = file->read();
+
+    if ((is->seek(0x00, Glib::SEEK_TYPE_CUR)))
+	{
+	  is->read(buffer,MIME_LEN);
+      magic.assign(buffer,FCC_LEN);
+      avis.assign(&buffer[8],FCC_LEN);
+    }
+
+    delete[] buffer;
+	is->close();
   }
-  return result;
+  catch (std::exception& ex)
+  {
+    cerr << "GFourCCAppWindow::is_valid_avifile() Exception caught: " << ex.what() << endl;
+  }
+
+  if ((magic == "RIFF") && (avis == "AVI\040"))
+    return true;
+
+  return false;
 }
 
 void GFourCCAppWindow::read_avi_header(Glib::ustring& fname)
@@ -613,38 +629,22 @@ void GFourCCAppWindow::write_fcc(Glib::ustring& fname, int byteOffset, Glib::ust
 
 Glib::ustring GFourCCAppWindow::read_fourcc_codec(Glib::ustring& fname)
 {
-  Glib::ustring compression = "unknown";
-  if (read_fcc(fname, 0x18) == "avih" && read_fcc(fname, 0xa4) == "strf")
-  {
-    compression = read_fcc(fname, 0xbc);
-  }
-  return compression;
+  return read_fcc(fname, 0xbc);
 }
 
 void GFourCCAppWindow::write_fourcc_codec(Glib::ustring& fname, Glib::ustring& compression)
 {
-  if (read_fcc(fname, 0x18) == "avih" && read_fcc(fname, 0xa4) == "strf")
-  {
-    write_fcc(fname,0xbc, compression);
-  }
+   write_fcc(fname,0xbc, compression);
 }
 
 Glib::ustring GFourCCAppWindow::read_fourcc_descr(Glib::ustring& fname)
 {
-  Glib::ustring fcc_handlder = "unknown";
-  if ((read_fcc(fname, 0x18) == "avih") && (read_fcc(fname, 0x64) == "strh"))
-  {
-    fcc_handlder = read_fcc(fname, 0x70);
-  }
-  return fcc_handlder;
+  return read_fcc(fname, 0x70);
 }
 
 void GFourCCAppWindow::write_fourcc_descr(Glib::ustring& fname, Glib::ustring& fcc_handler)
 {
-  if (read_fcc(fname, 0x18) == "avih" && read_fcc(fname, 0x64) == "strh")
-  {
-    write_fcc(fname, 0x70, fcc_handler);
-  }
+  write_fcc(fname, 0x70, fcc_handler);
 }
 
 void GFourCCAppWindow::on_dialog_drop_drag_data_received(
