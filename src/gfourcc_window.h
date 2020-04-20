@@ -54,12 +54,12 @@ protected:
   void read_avi_header(Glib::ustring&);
   void showMesgDlg(Glib::ustring&, Glib::ustring&, Glib::ustring&);
   char convert_non_ascii_char_to_dot(char);
-  Glib::ustring read_fcc(Glib::ustring&, int);
-  void write_fcc(Glib::ustring&, int, Glib::ustring&);
-  Glib::ustring read_fourcc_codec(Glib::ustring&);
-  void write_fourcc_codec(Glib::ustring&, Glib::ustring&);
-  Glib::ustring read_fourcc_descr(Glib::ustring&);
-  void write_fourcc_descr(Glib::ustring&, Glib::ustring&);
+  string read_fcc(Glib::ustring&, int);
+  void write_fcc(Glib::ustring&, int, string&);
+  string read_fourcc_codec(Glib::ustring&);
+  void write_fourcc_codec(Glib::ustring&, string&);
+  string read_fourcc_descr(Glib::ustring&);
+  void write_fourcc_descr(Glib::ustring&, string&);
 
 };
 

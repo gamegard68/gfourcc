@@ -308,7 +308,8 @@ Gtk::FileChooserButton* GFourCCAppWindow::build_file_chooser_button(void)
 
 void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
 {
-  Glib::ustring file, fname, fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev, emesg, imesg, dialog_title, dialog_icon;
+  Glib::ustring file, fname, emesg, imesg, dialog_title, dialog_icon;
+  string fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev;
   bool isDescChanged, isCodecChanged, hasDescChanged, hasCodecChanged;
 
   isDescChanged = false;
@@ -454,7 +455,7 @@ bool GFourCCAppWindow::file_exists(Glib::ustring& fname)
 bool GFourCCAppWindow::is_valid_avifile(Glib::ustring& fname)
 {
   char * buffer = new char[MIME_LEN];
-  Glib::ustring magic, avis;
+  string magic, avis;
 
   try
   {
@@ -462,14 +463,14 @@ bool GFourCCAppWindow::is_valid_avifile(Glib::ustring& fname)
     auto is = file->read();
 
     if ((is->seek(0x00, Glib::SEEK_TYPE_CUR)))
-	{
-	  is->read(buffer,MIME_LEN);
+    {
+      is->read(buffer,MIME_LEN);
       magic.assign(buffer,FCC_LEN);
       avis.assign(&buffer[8],FCC_LEN);
     }
 
     delete[] buffer;
-	is->close();
+    is->close();
   }
   catch (std::exception& ex)
   {
@@ -575,7 +576,7 @@ char GFourCCAppWindow::convert_non_ascii_char_to_dot(char ch)
   return (ch >= ' ') && (ch < 127) ? ch : '.';
 }
 
-Glib::ustring GFourCCAppWindow::read_fcc(Glib::ustring& fname, int byteOffset)
+string GFourCCAppWindow::read_fcc(Glib::ustring& fname, int byteOffset)
 {
   char * buffer = new char[FCC_LEN];
   Glib::ustring fcc = "";
@@ -608,7 +609,7 @@ Glib::ustring GFourCCAppWindow::read_fcc(Glib::ustring& fname, int byteOffset)
   return fcc;
 }
 
-void GFourCCAppWindow::write_fcc(Glib::ustring& fname, int byteOffset, Glib::ustring& fcc)
+void GFourCCAppWindow::write_fcc(Glib::ustring& fname, int byteOffset, string& fcc)
 {
   try
   {
@@ -627,22 +628,22 @@ void GFourCCAppWindow::write_fcc(Glib::ustring& fname, int byteOffset, Glib::ust
   }
 }
 
-Glib::ustring GFourCCAppWindow::read_fourcc_codec(Glib::ustring& fname)
+string GFourCCAppWindow::read_fourcc_codec(Glib::ustring& fname)
 {
   return read_fcc(fname, 0xbc);
 }
 
-void GFourCCAppWindow::write_fourcc_codec(Glib::ustring& fname, Glib::ustring& compression)
+void GFourCCAppWindow::write_fourcc_codec(Glib::ustring& fname, string& compression)
 {
    write_fcc(fname,0xbc, compression);
 }
 
-Glib::ustring GFourCCAppWindow::read_fourcc_descr(Glib::ustring& fname)
+string GFourCCAppWindow::read_fourcc_descr(Glib::ustring& fname)
 {
   return read_fcc(fname, 0x70);
 }
 
-void GFourCCAppWindow::write_fourcc_descr(Glib::ustring& fname, Glib::ustring& fcc_handler)
+void GFourCCAppWindow::write_fourcc_descr(Glib::ustring& fname, string& fcc_handler)
 {
   write_fcc(fname, 0x70, fcc_handler);
 }
