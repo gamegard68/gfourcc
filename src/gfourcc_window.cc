@@ -29,11 +29,11 @@ GFourCCAppWindow::GFourCCAppWindow()
   m_list_fccs()
 {
   // Markup tags for Header
-  m_pango_markup_start = ("<span font=\"Courier New\" font_weight=\"bold\" background=\"white\" foreground=\"black\">");
+  m_pango_markup_start = ("<span font=\"monospace 8\" font_weight=\"regular\" background=\"white\" foreground=\"black\">");
   m_pango_markup_end = ("</span>");
   // m_pango_fcc_markup_start = ("<span font=\"Andale Mono\" background=\"white\" foreground=\"black\" underline=\"single\">");
   // m_pango_fcc_markup_start = ("<span font=\"Andale Mono\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
-  m_pango_fcc_markup_start = ("<span font=\"Courier New\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
+  m_pango_fcc_markup_start = ("<span font=\"monospace 8\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
 
   // Initialize Empty Header
   static char ch = '.';
@@ -309,6 +309,18 @@ Gtk::FileChooserButton* GFourCCAppWindow::build_file_chooser_button(void)
 void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
 {
   Glib::ustring file, fname, emesg, imesg, dialog_title, dialog_icon;
+  dialog_icon = ("dialog-error");
+  dialog_title = ("ERROR");
+  
+  file = Glib::filename_from_uri(m_File_Chooser_Button->get_uri());
+  fname = Glib::filename_display_basename(m_File_Chooser_Button->get_filename());
+  
+  if (!(is_writeable_avifile(file))) {
+    emesg = ("File not writable:\n" + fname);
+    showMesgDlg(dialog_title, dialog_icon, emesg);
+    return;
+  }
+
   string fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev;
   bool isDescChanged, isCodecChanged, hasDescChanged, hasCodecChanged;
 
@@ -332,8 +344,7 @@ void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
     showMesgDlg(dialog_title, dialog_icon, emesg);
     return;
   }
-  file = Glib::filename_from_uri(m_File_Chooser_Button->get_uri());
-  fname = Glib::filename_display_basename(m_File_Chooser_Button->get_filename());
+
   dialog_title = ("INFO");
   dialog_icon = ("dialog-info");
 
@@ -487,7 +498,8 @@ void GFourCCAppWindow::read_avi_header(Glib::ustring& fname)
 {
   char * buffer = new char[AVILEN];
   static char ch;
-  Glib::ustring retStr, emesg, s, dialog_title, dialog_icon;
+  Glib::ustring emesg, s, dialog_title, dialog_icon;
+  string retStr;
 
   try
   {
@@ -626,6 +638,24 @@ void GFourCCAppWindow::write_fcc(Glib::ustring& fname, int byteOffset, string& f
   {
     cerr << "Exception caught: " << ex.what() << endl;
   }
+}
+
+bool GFourCCAppWindow::is_writeable_avifile(Glib::ustring& fname)
+{
+  try
+  {
+    auto file = Gio::File::create_for_path(fname);
+    auto ios = file->open_readwrite();
+    
+    ios->close();
+  }
+  catch(const Glib::Exception& ex)
+  {
+    cerr << "Exception caught: " << ex.what() << endl;
+    
+    return false;
+  }
+  return true;
 }
 
 string GFourCCAppWindow::read_fourcc_codec(Glib::ustring& fname)

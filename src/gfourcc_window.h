@@ -23,7 +23,7 @@ private:
   Glib::ustring m_pango_fcc_markup_start;
   Glib::ustring m_empty_hdr;
   Glib::ustring m_avi_hdr;
-  vector<Glib::ustring> m_list_fccs;
+  vector<string> m_list_fccs;
 
 protected:
   // GFourCCDialog errorDialog;
@@ -60,6 +60,7 @@ protected:
   void write_fourcc_codec(Glib::ustring&, string&);
   string read_fourcc_descr(Glib::ustring&);
   void write_fourcc_descr(Glib::ustring&, string&);
+  bool is_writeable_avifile(Glib::ustring& fname);
 
 };
 
