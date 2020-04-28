@@ -308,45 +308,40 @@ Gtk::FileChooserButton* GFourCCAppWindow::build_file_chooser_button(void)
 
 void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
 {
-  Glib::ustring file, fname, emesg, imesg, dialog_title, dialog_icon;
-  dialog_icon = ("dialog-error");
-  dialog_title = ("ERROR");
+  Glib::ustring file, fname, emesg, imesg, idialog_title, idialog_icon, edialog_title, edialog_icon;
+  string fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev;
+  bool isDescChanged, isCodecChanged, hasDescChanged, hasCodecChanged;
+  idialog_icon = ("dialog-info");
+  idialog_title = ("INFO");
+  edialog_icon = ("dialog-error");
+  edialog_title = ("ERROR");
   
   file = Glib::filename_from_uri(m_File_Chooser_Button->get_uri());
   fname = Glib::filename_display_basename(m_File_Chooser_Button->get_filename());
   
   if (!(is_writeable_avifile(file))) {
-    emesg = ("File not writable:\n" + fname);
-    showMesgDlg(dialog_title, dialog_icon, emesg);
+    emesg = ("File is write protected:\n" + fname);
+    showMesgDlg(edialog_title, edialog_icon, emesg);
     return;
   }
-
-  string fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev;
-  bool isDescChanged, isCodecChanged, hasDescChanged, hasCodecChanged;
 
   isDescChanged = false;
   isCodecChanged = false;
   hasDescChanged = false;
   hasCodecChanged = false;
 
-  dialog_icon = ("dialog-error");
-  dialog_title = ("ERROR");
-
   fcc_descr = (m_Combo_FourCCHandler->get_active_text());
   if (fcc_descr.length()<FCC_LEN) {
     emesg = ("Entered FCC Description Must be 4 characters long!");
-    showMesgDlg(dialog_title, dialog_icon, emesg);
+    showMesgDlg(edialog_title, edialog_icon, emesg);
     return;
   }
   fcc_coded = (m_Combo_FourCCodec->get_active_text());
   if (fcc_coded.length()<FCC_LEN) {
     emesg = ("Entered FCC Code Must be 4 characters long!");
-    showMesgDlg(dialog_title, dialog_icon, emesg);
+    showMesgDlg(edialog_title, edialog_icon, emesg);
     return;
   }
-
-  dialog_title = ("INFO");
-  dialog_icon = ("dialog-info");
 
   fcc_descr_prev = read_fourcc_descr(file);
   fcc_coded_prev = read_fourcc_codec(file);
@@ -370,13 +365,13 @@ void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
 
   if ((hasDescChanged) && (hasCodecChanged) && (isDescChanged) && (isCodecChanged)) {
     imesg = ("New FourCC Description and Codec\nsuccessfully applied to:\n" + fname);
-    showMesgDlg(dialog_title, dialog_icon, imesg);
+    showMesgDlg(idialog_title, idialog_icon, imesg);
   } else if ((hasDescChanged) && (isDescChanged)) {
 	imesg = ("New FourCC Description\nsuccessfully applied to:\n" + fname);
-    showMesgDlg(dialog_title, dialog_icon, imesg);
+    showMesgDlg(idialog_title, idialog_icon, imesg);
   } else if ((hasCodecChanged) && (isCodecChanged)) {
     imesg = ("New FourCC Codec\nsuccessfully applied to:\n" + fname);
-    showMesgDlg(dialog_title, dialog_icon, imesg);
+    showMesgDlg(idialog_title, idialog_icon, imesg);
   }
 
 }
@@ -642,20 +637,12 @@ void GFourCCAppWindow::write_fcc(Glib::ustring& fname, int byteOffset, string& f
 
 bool GFourCCAppWindow::is_writeable_avifile(Glib::ustring& fname)
 {
-  try
-  {
-    auto file = Gio::File::create_for_path(fname);
-    auto ios = file->open_readwrite();
-    
-    ios->close();
-  }
-  catch(const Glib::Exception& ex)
-  {
-    cerr << "Exception caught: " << ex.what() << endl;
-    
-    return false;
-  }
-  return true;
+  auto file = Gio::File::create_for_path(fname);
+  auto file_info = file->query_info("access::can-write", Gio::FILE_QUERY_INFO_NOFOLLOW_SYMLINKS);
+
+  if (file_info->get_attribute_boolean("access::can-write")) return true;
+
+  return false;
 }
 
 string GFourCCAppWindow::read_fourcc_codec(Glib::ustring& fname)
