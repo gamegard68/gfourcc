@@ -1,5 +1,5 @@
 # gfourcc
-GUI Tool written in C++ for changing the FOURCC Codec and Description of an AVI file.
+GUI Tool for changing the FOURCC Codec and Description of an AVI file.
 
 ![GFourCC Utility](/screenshots/gfourcc_scrn.png?raw=true "GFourCC Utility")
 
