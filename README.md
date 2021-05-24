@@ -14,8 +14,8 @@ Preparation and Build
       
 Installation
 
-    sudo make install // With Debug Information
-            
+    sudo make install
+    
     The following dependencies are required to build GFourCC from source:
         g++,
         make,
