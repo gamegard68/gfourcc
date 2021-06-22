@@ -28,26 +28,35 @@ GFourCCAppWindow::GFourCCAppWindow()
   m_avi_hdr(),
   m_list_fccs()
 {
+  // Getting Monospace System Font Name
+  //Glib::ustring monospace_sys_font = get_monospace_system_font_name();
+  Glib::ustring monospace_sys_font = "Monospace 8";
+  // cout << "Monospace System Font Name = " << monospace_sys_font << endl;
   // Markup tags for Header
-  m_pango_markup_start = ("<span font=\"monospace 8\" font_weight=\"regular\" background=\"white\" foreground=\"black\">");
+  m_pango_markup_start = ("<span font=\"");
+  m_pango_markup_start.append(monospace_sys_font);
+  // m_pango_markup_start.append("\" font_weight=\"regular\" background=\"white\" foreground=\"black\">");
+  m_pango_markup_start.append("\" font_weight=\"regular\" foreground=\"black\">");
   m_pango_markup_end = ("</span>");
   // m_pango_fcc_markup_start = ("<span font=\"Andale Mono\" background=\"white\" foreground=\"black\" underline=\"single\">");
   // m_pango_fcc_markup_start = ("<span font=\"Andale Mono\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
-  m_pango_fcc_markup_start = ("<span font=\"monospace 8\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
+  m_pango_fcc_markup_start = ("<span font=\"");
+  m_pango_fcc_markup_start.append(monospace_sys_font);
+  m_pango_fcc_markup_start.append("\" font_weight=\"bold\" background=\"black\" foreground=\"white\">");
 
   // Initialize Empty Header
   static char ch = '.';
   m_empty_hdr = m_pango_markup_start;
   for(int count = 0 ; count < AVILEN-1 ; count++)
   {
-    if (count == 112)
-      m_empty_hdr.append(m_pango_fcc_markup_start);
-    if (count == 116)
-      m_empty_hdr.append(m_pango_markup_end);
-    if (count == 188)
-      m_empty_hdr.append(m_pango_fcc_markup_start);
-    if (count == 192)
-      m_empty_hdr.append(m_pango_markup_end);
+//    if (count == 112)
+//      m_empty_hdr.append(m_pango_fcc_markup_start);
+//    if (count == 116)
+//      m_empty_hdr.append(m_pango_markup_end);
+//    if (count == 188)
+//      m_empty_hdr.append(m_pango_fcc_markup_start);
+//    if (count == 192)
+//      m_empty_hdr.append(m_pango_markup_end);
     m_empty_hdr.append(1, ch);
     if( (count+1) % 16 == 0) m_empty_hdr.append("\n");
   }
@@ -113,6 +122,7 @@ GFourCCAppWindow::GFourCCAppWindow()
 
   pEventBox->add(*pGrid_Main);
   //pEventBox->override_background_color (Gtk::StateFlags::NORMAL, Gdk.RGBA (1, 1, 0.5));
+  // pEventBox->override_background_color(Gdk::RGBA("#ABCDEF"),Gtk::StateFlags::STATE_FLAG_NORMAL);
 
   // Attach AVI Header Frame to Main Grid
   pGrid_Main->attach(*Gtk::manage(build_avi_header_frame()), 0, 0, 1, 1);
@@ -144,8 +154,7 @@ GFourCCAppWindow::GFourCCAppWindow()
   pEventBox->drag_dest_set(listTargets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY | Gdk::ACTION_MOVE);
 
   //Connect signals:
-  pEventBox->signal_drag_data_received().connect(sigc::mem_fun(*this,
-                  &GFourCCAppWindow::on_dialog_drop_drag_data_received) );
+  pEventBox->signal_drag_data_received().connect(sigc::mem_fun(*this, &GFourCCAppWindow::on_dialog_drop_drag_data_received) );
 
   m_Button_Apply_FourCC->set_sensitive(false);
   set_has_resize_grip(false);
@@ -166,10 +175,13 @@ Gtk::Frame *GFourCCAppWindow::build_avi_header_frame(void)
   auto *m_Frame_AviHeader = new Gtk::Frame;
   m_Label_AviHeader = new Gtk::Label;
 
+
   m_Frame_AviHeader->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
   m_Frame_AviHeader->set_label(" AVI Header ");
   m_Label_AviHeader->set_tooltip_text("First 224 bytes of AVI File.");
   m_Label_AviHeader->set_markup(m_empty_hdr);
+  // m_Label_AviHeader->set_label(m_empty_hdr);
+
 
   m_Frame_AviHeader->add(*Gtk::manage(m_Label_AviHeader));
   m_Frame_AviHeader->set_halign(Gtk::ALIGN_START);
@@ -367,7 +379,7 @@ void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
     imesg = ("New FourCC Description and Codec\nsuccessfully applied to:\n" + fname);
     showMesgDlg(idialog_title, idialog_icon, imesg);
   } else if ((hasDescChanged) && (isDescChanged)) {
-	imesg = ("New FourCC Description\nsuccessfully applied to:\n" + fname);
+    imesg = ("New FourCC Description\nsuccessfully applied to:\n" + fname);
     showMesgDlg(idialog_title, idialog_icon, imesg);
   } else if ((hasCodecChanged) && (isCodecChanged)) {
     imesg = ("New FourCC Codec\nsuccessfully applied to:\n" + fname);
@@ -687,6 +699,11 @@ void GFourCCAppWindow::on_dialog_drop_drag_data_received(
     }
   }
   context->drag_finish(false, false, time);
+}
+
+Glib::ustring GFourCCAppWindow::get_monospace_system_font_name(void)
+{
+  return Gio::Settings::create("org.gnome.desktop.interface")->get_string("monospace-font-name");
 }
 
 void GFourCCAppWindow::on_button_quit_clicked(void)
