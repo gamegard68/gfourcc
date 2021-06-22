@@ -7,7 +7,7 @@ AC_PREREQ([2.13])
 AC_CONFIG_SRCDIR([src/main.cc])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES(Makefile src/Makefile)
 
 dnl -----------------------------------------------
 dnl Package name and version number (user defined)
@@ -39,3 +39,4 @@ AX_CXX_COMPILE_STDCXX_11()
 
 dnl Create makefiles
 AC_OUTPUT
+
