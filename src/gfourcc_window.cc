@@ -701,10 +701,10 @@ void GFourCCAppWindow::on_dialog_drop_drag_data_received(
   context->drag_finish(false, false, time);
 }
 
-Glib::ustring GFourCCAppWindow::get_monospace_system_font_name(void)
-{
-  return Gio::Settings::create("org.gnome.desktop.interface")->get_string("monospace-font-name");
-}
+//Glib::ustring GFourCCAppWindow::get_monospace_system_font_name(void)
+//{
+//  return Gio::Settings::create("org.gnome.desktop.interface")->get_string("monospace-font-name");
+//}
 
 void GFourCCAppWindow::on_button_quit_clicked(void)
 {

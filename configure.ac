@@ -1,19 +1,20 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([gfourcc],[0.1.2-git])
+AC_INIT([gfourcc],[0.1.4-git])
 AC_PREREQ([2.13])
 
 
 AC_CONFIG_SRCDIR([src/main.cc])
-AM_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_FILES([Makefile])
 
 dnl -----------------------------------------------
 dnl Package name and version number (user defined)
 dnl -----------------------------------------------
 
 PACKAGE=gfourcc
-VERSION=0.1.2
+VERSION=0.1.4
 
 dnl -----------------------------------------------
 dnl Package name and version number (DO NOT MODIFY)
@@ -37,4 +38,4 @@ dnl Enable C++11 compilation.
 AX_CXX_COMPILE_STDCXX_11()
 
 dnl Create makefiles
-AC_OUTPUT(Makefile src/Makefile)
+AC_OUTPUT
