@@ -323,7 +323,7 @@ void GFourCCAppWindow::on_button_apply_fourcc_clicked(void)
   Glib::ustring file, fname, emesg, imesg, idialog_title, idialog_icon, edialog_title, edialog_icon;
   string fcc_descr, fcc_coded, fcc_descr_prev, fcc_coded_prev;
   bool isDescChanged, isCodecChanged, hasDescChanged, hasCodecChanged;
-  idialog_icon = ("dialog-info");
+  idialog_icon = ("dialog-information");
   idialog_title = ("INFO");
   edialog_icon = ("dialog-error");
   edialog_title = ("ERROR");
